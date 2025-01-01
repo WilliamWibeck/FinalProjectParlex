@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="e82ae881-86f9-433d-b1dd-8d8fc2d552d7" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/material_theme_project_new.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/.env" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/.firebaserc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/firebase.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/functions/.eslintrc.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/functions/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/functions/package-lock.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/functions/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/functions/src/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/functions/tsconfig.dev.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/functions/tsconfig.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/postcss.config.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src.zip" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/AccuracyGraph/AccuracyGraph.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/AdminPage/WordBank.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/BlurryShapesBackground/BlurryBackground.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/CenteringWrapper.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/CompleteSentence/CompleteSentence.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/Confetti/Confetti.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/CurrentUserChip/CurrentUserChip.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/DashboardLeaderWidget/DashboardLeaderWidget.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/DashboardMessage/DashboardMessage.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/FlashCard/FlashCard.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/GameBoard/GameBoard.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/GameFilter/GameFilter.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/GameShortCuts/GameShortCuts.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/GraphBox/GraphBox.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/IntroPage/IntroPage.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/SentenceAddingForm/SentenceAddingForm.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/SentenceGrid/SentenceGrid.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/Sidebar/Sidebar.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/StatBar/Statbar.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/StatBox/StatBox.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/StatContainer/StatContainer.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/TestComponent.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/TotalTimeTracker/TotalTimeTracker.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/WordAddingForm/WordAddingForm.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/WordGrid/WordGrid.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/WordOrder/Dragable.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/WordOrder/DroppableArea.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/WordOrder/WordOrder.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/customHooks/useTimeSpent.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/firebase/firebase-admin.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/functions/fetchAccuracy.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/functions/fetchAllUserStats.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/functions/fetchFailedWords.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/functions/fetchFailedWordsById.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/functions/fetchMostUsedCategory.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/functions/fetchSubCollections.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/functions/fetchTotalSentences.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/functions/fetchTotalTimeSpent.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/functions/fetchTotalWordOrder.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/functions/fetchTotalWords.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/functions/fetchWords.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/functions/incrementCategoryCount.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/functions/incrementSentencesLearned.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/functions/incrementWordOrder.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/functions/incrementWordsLearned.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/functions/incrementWrongGuessCompleteSentence.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/functions/incrementWrongGuessFlashCard.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/functions/incrementWrongGuessWordOrder.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/functions/trackFailedWord.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/tailwind.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/App.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/Auth/Login.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Auth/Login.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/Auth/Logout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Auth/Logout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/Auth/Signup.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Auth/Signup.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/Dashboard/Dashboard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Dashboard/Dashboard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/Routes/PublicRoute.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Routes/PublicRoute.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/firebase/auth.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/firebase/auth.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/firebase/firebase.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/firebase/firebase.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/theme/theme.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/theme/theme.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/firestore.rules" beforeDir="false" afterPath="$PROJECT_DIR$/firestore.rules" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/.package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 1
+}]]></component>
+  <component name="ProjectId" id="2qzNzq9u7GT9qsidpq2YiFgoHdr" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "C:/Users/tooba/Coding/parlex",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "ts.external.directory.path": "C:\\Users\\tooba\\Coding\\parlex\\client\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-deb605915726-JavaScript-WS-243.22562.222" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="e82ae881-86f9-433d-b1dd-8d8fc2d552d7" name="Changes" comment="" />
+      <created>1735661709079</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1735661709079</updated>
+      <workItem from="1735661710165" duration="1391000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
