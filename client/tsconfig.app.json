@@ -1,26 +1,38 @@
 {
   "compilerOptions": {
+    /* File location for incremental compilation info */
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
-    "target": "ES2020",
-    "useDefineForClassFields": true,
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
-    "module": "ESNext",
-    "skipLibCheck": true,
 
-    /* Bundler mode */
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
-    "isolatedModules": true,
-    "moduleDetection": "force",
-    "noEmit": true,
-    "jsx": "react-jsx",
+    /* Language settings */
+    "target": "ES2020", // Target ES2020 features
+    "useDefineForClassFields": true, // Use modern class field definitions
+
+    /* Library options */
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+
+    /* Module settings */
+    "module": "ESNext", // Use ESNext module system
+    "moduleResolution": "node", // Resolve modules in Node.js style
+    "skipLibCheck": true, // Skip type checking for declaration files
+    "esModuleInterop": true, // ECMAScript module compatibility
+    "allowSyntheticDefaultImports": true, // Allow default imports for ES modules
+
+    /* JSX */
+    "jsx": "react-jsx", // Use JSX with React 17+ or 18+
+    "allowImportingTsExtensions": true, // Allow imports with explicit `.ts` or `.tsx` extensions
+
+    /* Testing options */
+    "noEmit": true, // Prevent emitting compiled files
+    "isolatedModules": true, // Ensure each file is treated as its own module
+    "moduleDetection": "force", // Enforce strict module resolution
 
     /* Linting */
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "strict": true, // Enable all strict type checking options
+    "noUnusedLocals": true, // Report unused local variables
+    "noUnusedParameters": true, // Report unused function parameters
+    "noFallthroughCasesInSwitch": true, // Disallow fallthrough cases in switch statements
+    "noUncheckedSideEffectImports": true // Disallow side-effects in imports
   },
-  "include": ["src"]
+  "include": ["src"], // Include the `src` directory for compilation
+  "exclude": ["node_modules", "dist"] // Exclude build and dependency directories
 }

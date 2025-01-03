@@ -12,7 +12,6 @@ export const fetchSubcollections = async (
       const subCollections = data.subCollections || [];
       return subCollections;
     } else {
-      console.log("Category does not exist.");
       return [];
     }
   } catch (error) {

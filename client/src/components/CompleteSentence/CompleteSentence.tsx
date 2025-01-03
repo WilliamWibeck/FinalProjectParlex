@@ -8,7 +8,7 @@ import {
   increment,
   updateDoc,
 } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import Sidebar from "../Sidebar/Sidebar";
 import { useTimeSpent } from "../../customHooks/useTimeSpent";
 import { incrementSentencesLearned } from "../../functions/incrementSentencesLearned";
@@ -16,16 +16,22 @@ import { incrementIncorrectGuessCompleteSentence } from "../../functions/increme
 
 const db = getFirestore();
 
+interface Sentence {
+  id: string;
+  sentence: string;
+}
+
 const CompleteSentence = () => {
   const [sentenceAnswer, setSentenceAnswer] = useState<string>("");
-  const [sentences, setSentences] = useState<any[]>([]);
-  const [formattedSentence, setFormattedSentence] = useState<string>(""); // Sentence with blanks
-  const [randomSentence, setRandomSentence] = useState<any | null>(null);
+  const [sentences, setSentences] = useState<Sentence[]>([]);
+  const [formattedSentence, setFormattedSentence] = useState<string>("");
+  const [randomSentence, setRandomSentence] = useState<Sentence | null>(null);
   const [flashCorrect, setFlashCorrect] = useState<boolean>(false);
   const [flashIncorrect, setFlashIncorrect] = useState<boolean>(false);
   const auth = getAuth();
   const user = auth.currentUser;
 
+  //Tiden spenderad i spelet sparas till databasen
   const saveTimeSpentToDB = async (timeSpent: number) => {
     if (!user?.uid) return;
 
@@ -41,12 +47,13 @@ const CompleteSentence = () => {
 
   const timeSpentPlaying = useTimeSpent(saveTimeSpentToDB);
 
+  //Meningarna hämtas, filtreras på ifall dem innehåller 'Un' eller 'Une' och sätts till statet.
   const fetchSentences = async () => {
     try {
       const snapshot = await getDocs(collection(db, "sentences"));
       const fetchedSentences = snapshot.docs.map((doc) => ({
         id: doc.id,
-        ...doc.data(),
+        sentence: doc.data().sentence || "",
       }));
 
       const filteredSentences = fetchedSentences.filter((sentence) =>
@@ -58,6 +65,7 @@ const CompleteSentence = () => {
     }
   };
 
+  //En slumpmässig mening hämtas, formateras genom att ta bort 'Un' eller 'Une' och sätts sedan till formattedSentence statet.
   const fetchRandomSentence = () => {
     if (sentences.length === 0) return;
 
@@ -69,7 +77,9 @@ const CompleteSentence = () => {
     setFormattedSentence(formatted);
   };
 
-  const checkAnswer = (e: React.FormEvent) => {
+  //Här kontrolleras användarens svar. Inputen matchas med meningen från randomSentence. Är det korrekt flashar meningen grönt, antal meningar korrekta uppdateras och en ny hämtas
+  //Är svaret inkorrekt flashar meningen rött och antal misslyckade gissningar uppdateras.
+  const checkAnswer = (e: FormEvent) => {
     e.preventDefault();
     if (
       randomSentence &&
@@ -105,7 +115,7 @@ const CompleteSentence = () => {
       <Box className="flex items-center justify-center w-full">
         <div className="flex items-center flex-col justify-center p-5 gap-12">
           <h2
-            className={`text-[98px] ${
+            className={`text-[98px] transition-all ${
               flashCorrect
                 ? "animate-flash-green text-green-500"
                 : flashIncorrect
@@ -118,7 +128,7 @@ const CompleteSentence = () => {
               : formattedSentence || "Loading..."}
           </h2>
           <Box className="flex flex-col">
-            <form onSubmit={checkAnswer} className="mb-4 flex flex-col gap-2">
+            <form onSubmit={checkAnswer} className="mb-4 flex flex-col gap-4">
               <input
                 value={sentenceAnswer}
                 onChange={(e) => setSentenceAnswer(e.target.value)}

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 export const useTimeSpent = (onStop: (timeElapsed: number) => void) => {
-  const [timeSpent, setTimeSpent] = useState(0);
+  const [timeSpent, setTimeSpent] = useState<number>(0);
 
   useEffect(() => {
     const startTime = Date.now();

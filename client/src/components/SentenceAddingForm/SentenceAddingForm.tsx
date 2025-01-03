@@ -1,13 +1,13 @@
-import { useState } from "react";
+import { useState, FormEvent } from "react";
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "../../firebase/firebase";
 import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 
 const SentenceAddingForm = () => {
-  const [sentence, setSentence] = useState("");
-  const [category, setCategory] = useState("");
+  const [sentence, setSentence] = useState<string>("");
+  const [category, setCategory] = useState<string>("");
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
     if (!sentence || !category) {
@@ -29,7 +29,6 @@ const SentenceAddingForm = () => {
       setCategory("");
     } catch (error) {
       console.error("An error occurred while adding the sentence:", error);
-      alert("Failed to add the sentence. Please try again.");
     }
   };
 
@@ -37,17 +36,10 @@ const SentenceAddingForm = () => {
     <Box
       component="form"
       onSubmit={handleSubmit}
-      sx={{
-        backgroundColor: "#1c1c1e",
-        borderRadius: "10px",
-        padding: "20px",
-        maxWidth: "400px",
-        margin: "auto",
-        color: "white",
-      }}
+      className="bg-zinc-900 rounded-lg p-6 max-w-md mx-auto text-white"
     >
-      <Stack spacing={3}>
-        <Typography variant="h5" sx={{ textAlign: "center", color: "white" }}>
+      <Stack spacing={6}>
+        <Typography variant="h5" className="text-center text-white font-bold">
           Add New Sentence
         </Typography>
         <TextField
@@ -56,6 +48,7 @@ const SentenceAddingForm = () => {
           value={sentence}
           onChange={(e) => setSentence(e.target.value)}
           required
+          className="text-white"
           sx={{
             "& .MuiOutlinedInput-root": {
               "& fieldset": {
@@ -86,6 +79,7 @@ const SentenceAddingForm = () => {
           value={category}
           onChange={(e) => setCategory(e.target.value)}
           required
+          className="text-white"
           sx={{
             "& .MuiOutlinedInput-root": {
               "& fieldset": {
@@ -113,13 +107,7 @@ const SentenceAddingForm = () => {
         <Button
           type="submit"
           variant="contained"
-          sx={{
-            backgroundColor: "#6b46c1",
-            color: "white",
-            "&:hover": {
-              backgroundColor: "#55349a",
-            },
-          }}
+          className="bg-purple-700 hover:bg-purple-600 text-white py-2 rounded-md"
         >
           Add Sentence
         </Button>

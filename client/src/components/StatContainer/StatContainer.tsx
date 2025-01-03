@@ -1,15 +1,21 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import ReactApexChart from "react-apexcharts";
-import { fetchAccuracy } from "../../functions/fetchAccuracy";
+import { fetchAccuracy, AccuracyStats } from "../../functions/fetchAccuracy";
 
 const StatContainer = () => {
-  const [stats, setStats] = useState<any>(null);
+  const [stats, setStats] = useState<AccuracyStats>({
+    flashCardAccuracy: 0,
+    completeSentenceAccuracy: 0,
+    wordOrderAccuracy: 0,
+  });
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const accuracy = await fetchAccuracy();
-        setStats(accuracy);
+        if (accuracy) {
+          setStats(accuracy);
+        }
       } catch (error) {
         console.error("Error fetching accuracy data:", error);
       }
@@ -18,16 +24,17 @@ const StatContainer = () => {
     fetchData();
   }, []);
 
+  //Här säkerställs det att accuracyn alltid ligger mellan 0 och 100
   const shortenedFlashcardAccuracy = Math.min(
-    Math.max(Number(stats?.flashCardAccuracy || 0), 0),
+    Math.max(stats.flashCardAccuracy, 0),
     100
   );
   const shortenedCompleteSentenceAccuracy = Math.min(
-    Math.max(Number(stats?.completeSentenceAccuracy || 0), 0),
+    Math.max(stats.completeSentenceAccuracy, 0),
     100
   );
   const shortenedWordOrderAccuracy = Math.min(
-    Math.max(Number(stats?.wordOrderAccuracy || 0), 0),
+    Math.max(stats.wordOrderAccuracy, 0),
     100
   );
 
@@ -40,7 +47,6 @@ const StatContainer = () => {
         hollow: {
           size: "80%",
         },
-
         dataLabels: {
           name: {
             show: true,

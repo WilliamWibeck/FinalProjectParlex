@@ -1,22 +1,13 @@
-import { Divider, Paper, Stack, Typography } from "@mui/material";
-import { getAuth } from "firebase/auth";
-import { doc, getDoc, getFirestore } from "firebase/firestore";
+import { Paper, Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { fetchTotalWords } from "../../functions/fetchTotalWords";
 import { fetchTotalSentences } from "../../functions/fetchTotalSentences";
 import { fetchTotalWordOrder } from "../../functions/fetchTotalWordOrder";
 
-type Props = {};
-
-const db = getFirestore();
-const auth = getAuth();
-
-const Statbar = (props: Props) => {
-  const user = auth.currentUser;
-
+const Statbar = () => {
   const [totalWordsDone, setTotalWordsDone] = useState<number[]>();
-  const [totalSentencesDone, setTotalSentencesDone] = useState();
-  const [totalWordOrderDone, setTotalWordOrderDone] = useState();
+  const [totalSentencesDone, setTotalSentencesDone] = useState<number[]>();
+  const [totalWordOrderDone, setTotalWordOrderDone] = useState<number[]>();
 
   useEffect(() => {
     const fetchWordsDone = async () => {

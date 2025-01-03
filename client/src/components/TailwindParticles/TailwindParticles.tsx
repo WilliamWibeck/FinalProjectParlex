@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 
 const Particles = () => {
+  //Här skapas ett objekt som föreställer en liten prick.
   const generateParticle = () => {
     const spawnFromTop = Math.random() > 0.5;
     return {
@@ -11,9 +12,12 @@ const Particles = () => {
     };
   };
 
+  //En lista med 100 particles skapas genom att kalla på generateParticle() 100 ggr.
   const [particles, setParticles] = useState(() =>
     Array.from({ length: 100 }, () => generateParticle())
   );
+
+  //Här sköts skapandet och borttagningen av particles. En ny genereras varje 300ms och den som är 'äldst' tas bort.
   useEffect(() => {
     const interval = setInterval(() => {
       setParticles((prevParticles) => {

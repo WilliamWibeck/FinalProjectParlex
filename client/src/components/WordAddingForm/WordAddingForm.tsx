@@ -1,14 +1,14 @@
-import { useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { collection, doc, addDoc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "../../firebase/firebase";
 import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 
 const WordAddingForm = () => {
-  const [french, setFrench] = useState("");
-  const [english, setEnglish] = useState("");
-  const [category, setCategory] = useState("");
+  const [french, setFrench] = useState<string>("");
+  const [english, setEnglish] = useState<string>("");
+  const [category, setCategory] = useState<string>("");
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
 
     if (!category || !english || !french) {
@@ -66,7 +66,9 @@ const WordAddingForm = () => {
           label="Word in French"
           type="text"
           value={french}
-          onChange={(e) => setFrench(e.target.value)}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setFrench(e.target.value)
+          }
           required
           sx={{
             "& .MuiOutlinedInput-root": {
@@ -96,7 +98,9 @@ const WordAddingForm = () => {
           label="Word in English"
           type="text"
           value={english}
-          onChange={(e) => setEnglish(e.target.value)}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setEnglish(e.target.value)
+          }
           required
           sx={{
             "& .MuiOutlinedInput-root": {
@@ -126,7 +130,9 @@ const WordAddingForm = () => {
           label="Category"
           type="text"
           value={category}
-          onChange={(e) => setCategory(e.target.value)}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setCategory(e.target.value)
+          }
           required
           sx={{
             "& .MuiOutlinedInput-root": {

@@ -1,4 +1,4 @@
-import { DndContext } from "@dnd-kit/core";
+import { DndContext, DragEndEvent } from "@dnd-kit/core";
 import { arrayMove, SortableContext } from "@dnd-kit/sortable";
 import { collection, getDocs, getFirestore } from "firebase/firestore";
 import { useEffect, useState } from "react";
@@ -9,31 +9,41 @@ import { incrementIncorrectGuessWordOrder } from "../../functions/incrementWrong
 
 const db = getFirestore();
 
+interface Word {
+  id: string;
+  word: string;
+}
+
+interface Sentence {
+  id: string;
+  sentence: string;
+}
+
 const WordOrder = () => {
-  const [sentences, setSentences] = useState<string[]>([]);
+  const [sentences, setSentences] = useState<Sentence[]>([]);
   const [randomSentence, setRandomSentence] = useState<string>("");
   const [formattedSentence, setFormattedSentence] = useState<string[]>([]);
-  const [shuffledWords, setShuffledWords] = useState<
-    { id: string; word: string }[]
-  >([]);
+  const [shuffledWords, setShuffledWords] = useState<Word[]>([]);
   const [flashState, setFlashState] = useState<string>("");
 
   const sentencesRef = collection(db, "sentences");
 
-  const fetchSentences = async () => {
+  //Meningar hämtas från Firestore och sätts till sentences statet.
+  const fetchSentences = async (): Promise<void> => {
     try {
       const snapshot = await getDocs(sentencesRef);
-      const sentences = snapshot.docs.map((doc) => ({
+      const sentences: Sentence[] = snapshot.docs.map((doc) => ({
         id: doc.id,
-        ...doc.data(),
+        sentence: doc.data().sentence || "",
       }));
 
       setSentences(sentences);
-    } catch (error) {
-      console.log("Error fetching sentences:", error);
+    } catch (error: unknown) {
+      console.error("Error fetching sentences:", error);
     }
   };
 
+  //En slumpmässig mening hämtas från sentences och formateras genom lowerCased, splittas vid " " och slutligen randomizas ordningen på orden.
   const fetchRandomSentence = () => {
     if (sentences.length > 0) {
       const randomIndex = Math.floor(Math.random() * sentences.length);
@@ -54,21 +64,22 @@ const WordOrder = () => {
     }
   };
 
-  const handleDrag = (e: any) => {
-    const { active, over } = e;
-
+  //Denna funktionen hanterar själva dragningen av ord. Första if-satsen säkerställer att den endast händer något om ordet faktiskt har flyttats.
+  const handleDrag = ({ active, over }: DragEndEvent) => {
     if (active.id !== over?.id) {
       const startIndex = shuffledWords.findIndex(
         (item) => item.id === active.id
       );
       const endIndex = shuffledWords.findIndex((item) => item.id === over?.id);
 
+      //arrayMove flyttar ordet från startIndex till endIndex och returnerar en ny lista där positionerna har uppdaterats.
       setShuffledWords((prevWords) =>
         arrayMove(prevWords, startIndex, endIndex)
       );
     }
   };
 
+  //Här valideras ordningen på meningen.
   const validateOrder = () => {
     const reorderedWords = shuffledWords.map((item) => item.word).join(" ");
     const originalWords = formattedSentence.join(" ");

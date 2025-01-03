@@ -1,14 +1,6 @@
-import {
-  Box,
-  Button,
-  Card,
-  Grid,
-  Paper,
-  Stack,
-  Typography,
-} from "@mui/material";
-import { db, app } from "../../firebase/firebase";
-import { collection, getDocs, getFirestore } from "firebase/firestore";
+import { Box, Card, Grid, Typography } from "@mui/material";
+import { db } from "../../firebase/firebase";
+import { collection, getDocs } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { fetchWords } from "../../functions/fetchWords";
 import { incrementCategoryCount } from "../../functions/incrementCategoryCount";
@@ -18,41 +10,51 @@ interface GameFilterProps {
   onCategorySelect: (category: string) => void;
 }
 
+interface Words {
+  id: string;
+  french: string;
+  english: string;
+  category: string;
+}
+
 const GameFilter = ({ onCategorySelect }: GameFilterProps) => {
   const [categories, setCategories] = useState<string[]>([]);
-  const [words, setWords] = useState([]);
+  const [words, setWords] = useState<Words[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>("");
-  const [failedWords, setFailedWords] = useState([]);
+  const [failedWords, setFailedWords] = useState<Words[]>([]);
 
+  //Kategorierna fetchas
   const fetchCategories = async () => {
     try {
       const categoriesRef = collection(db, "categories");
       const snapshot = await getDocs(categoriesRef);
       const categoryNames = snapshot.docs.map((doc) => doc.id);
       setCategories(categoryNames);
-    } catch {
-      alert("Error fetching categories");
+    } catch (error: unknown) {
+      console.error("Error: ", error);
     }
   };
 
+  //Orden fetchas.
   const handleFetchWords = async (category: string) => {
     try {
-      const wordsData = await fetchWords(category, "words");
+      const wordsData: Words[] = await fetchWords(category, "words");
       setWords(wordsData);
       setSelectedCategory(category);
       incrementCategoryCount(category);
-    } catch {
-      alert("Error fetching words for selected category");
+    } catch (error: unknown) {
+      console.error("Error: ", error);
     }
   };
 
+  //Ord som man antingen stavat fel på eller gissat fel på fetchas.
   const handleFetchFailedWords = async () => {
     try {
-      const failedWordList = await fetchFailedWords();
+      const failedWordList: Words[] = await fetchFailedWords();
       setFailedWords(failedWordList);
       setSelectedCategory("Failed Words");
-    } catch {
-      console.error("Error fetching failed words");
+    } catch (error: unknown) {
+      console.error("Error: ", error);
     }
   };
 
@@ -67,20 +69,16 @@ const GameFilter = ({ onCategorySelect }: GameFilterProps) => {
   }, []);
 
   return (
-    <Box className="h-full w-full !bg-zinc-900 flex flex-row gap-24 ">
+    <Box className="h-full w-full bg-zinc-900 flex flex-row gap-6">
       <Sidebar />
       <Box className="flex flex-col items-center justify-center p-4 w-full h-full">
         <Typography
           variant="h4"
-          sx={{ color: "white", fontWeight: "bold", marginBottom: 4 }}
+          className="text-white font-bold mb-4 text-center"
         >
           Select a Category
         </Typography>
-        <Grid
-          container
-          spacing={3}
-          sx={{ maxWidth: "1200px", width: "100%", paddingX: 2 }}
-        >
+        <Grid container spacing={3} className="max-w-[1200px] w-full px-2">
           {categories.map((category) => (
             <Grid item lg={2} key={category}>
               <Card
@@ -88,21 +86,7 @@ const GameFilter = ({ onCategorySelect }: GameFilterProps) => {
                   onCategorySelect(category);
                   incrementCategoryCount(category);
                 }}
-                sx={{
-                  backgroundColor: "gray",
-                  color: "white",
-                  fontWeight: "bold",
-                  textAlign: "center",
-                  padding: 2,
-                  cursor: "pointer",
-                  borderRadius: "8px",
-                  boxShadow: 3,
-                  transition: "transform 0.3s, background-color 0.3s",
-                  "&:hover": {
-                    backgroundColor: "#6b46c1",
-                    transform: "scale(1.1)",
-                  },
-                }}
+                className="!bg-zinc-400 !text-white font-bold text-center p-2 rounded-lg shadow-md cursor-pointer transform transition-transform duration-300 hover:!bg-[#6b46c1] hover:scale-110"
               >
                 {category}
               </Card>

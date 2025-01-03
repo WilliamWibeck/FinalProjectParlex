@@ -5,7 +5,14 @@ import { fetchWordsByIds } from "./fetchFailedWordsById";
 const db = getFirestore();
 const auth = getAuth();
 
-export const fetchFailedWords = async () => {
+interface Words {
+  id: string;
+  french: string;
+  english: string;
+  category: string;
+}
+
+export const fetchFailedWords = async (): Promise<Words[]> => {
   const user = auth.currentUser;
   if (!user) {
     console.error("No user is logged in.");
@@ -29,7 +36,7 @@ export const fetchFailedWords = async () => {
       return [];
     }
 
-    const failedWordsList = await fetchWordsByIds(failedWordIds);
+    const failedWordsList: Words[] = await fetchWordsByIds(failedWordIds);
     console.log("Failed Words List:", failedWordsList);
 
     return failedWordsList;

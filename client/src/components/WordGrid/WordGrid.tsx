@@ -1,15 +1,24 @@
 import { Box } from "@mui/material";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  GridToolbar,
+  GridColDef,
+  GridRowsProp,
+} from "@mui/x-data-grid";
 
-const WordGrid = ({ rows }) => {
-  const columns = [
+interface WordGridProps {
+  rows: GridRowsProp;
+}
+
+const WordGrid = ({ rows }: WordGridProps) => {
+  const columns: GridColDef[] = [
     { field: "french", headerName: "French", flex: 1 },
     { field: "english", headerName: "English", flex: 1 },
     { field: "category", headerName: "Category", flex: 1 },
   ];
 
   return (
-    <Box sx={{ height: "100%", width: "100%" }}>
+    <Box className="h-full w-full">
       <DataGrid
         rows={rows}
         columns={columns}

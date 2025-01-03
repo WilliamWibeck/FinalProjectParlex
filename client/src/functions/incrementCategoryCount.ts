@@ -19,7 +19,6 @@ export const incrementCategoryCount = async (categoryName: string) => {
     await updateDoc(userRef, {
       [`categoriesPractised.${categoryName}`]: increment(1),
     });
-    console.log("`${categoryName}`" + "has been incremented");
   } catch (error) {
     console.error("Error updating category count:", error);
   }

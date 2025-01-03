@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import { Box, Button, Paper, TextField } from "@mui/material";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import { FirebaseError } from "firebase/app";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -11,14 +12,26 @@ const Login = () => {
   const navigate = useNavigate();
   const auth = getAuth();
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleLogin = async (e: FormEvent) => {
     e.preventDefault();
     setError("");
     try {
       await signInWithEmailAndPassword(auth, email, password);
       navigate("/dashboard");
-    } catch (err: any) {
-      setError(err.message);
+      //Visar olika error beroende på vilket FirebaseError som uppstår.
+    } catch (err: unknown) {
+      if (err instanceof FirebaseError) {
+        switch (err.code) {
+          case "auth/invalid-email":
+            setError("The email address is invalid.");
+            break;
+          case "auth/invalid-credential":
+            setError("Wrong password.");
+            break;
+          default:
+            setError("An error occurred.");
+        }
+      }
     }
   };
 

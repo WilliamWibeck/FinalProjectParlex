@@ -1,14 +1,12 @@
 import { FormEvent, useEffect, useState } from "react";
-import { Alert, Box, Button, Divider, Paper, TextField } from "@mui/material";
+import { Alert, Box, Button, Paper, TextField } from "@mui/material";
 import { signup } from "../../firebase/auth";
 import IntroPage from "../IntroPage/IntroPage";
 import { useNavigate } from "react-router-dom";
 import { useReward } from "react-rewards";
 import { FirebaseError } from "firebase/app";
 
-type Props = {};
-
-const Signup = (props: Props) => {
+const Signup = () => {
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -30,6 +28,7 @@ const Signup = (props: Props) => {
     setError("");
 
     try {
+      //Här callas signup funktionen som kommer från firebase med värdena från fälten.
       await signup({ email, password, firstName, lastName });
       confettiReward();
       toggleAlert();
@@ -43,13 +42,13 @@ const Signup = (props: Props) => {
             setError("The email address is already in use.");
             break;
           case "auth/invalid-email":
-            setError("The email address is not valid.");
+            setError("The email address is invalid.");
             break;
           case "auth/weak-password":
-            setError("The password is too weak.");
+            setError("Please choose a more secure password.");
             break;
           default:
-            setError("An error occurred. Please try again.");
+            setError("An error occurred.");
         }
       } else {
         setError("An unexpected error occurred.");
@@ -57,10 +56,11 @@ const Signup = (props: Props) => {
     }
   };
 
-  const handleIntroState = (value: boolean) => {
+  const handleIntroState = () => {
     setIntroShown(true);
   };
 
+  //Hanterar statet för ifall introt har visats eller inte.
   useEffect(() => {
     if (introShown) {
       setTimeout(() => {

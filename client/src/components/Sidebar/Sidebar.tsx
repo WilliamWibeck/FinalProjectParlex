@@ -29,7 +29,7 @@ const drawerWidthCollapsed = 80;
 const auth = getAuth();
 
 const Sidebar = () => {
-  const [collapsed, setCollapsed] = useState(true);
+  const [collapsed, setCollapsed] = useState<boolean>(true);
 
   const user = auth.currentUser;
 

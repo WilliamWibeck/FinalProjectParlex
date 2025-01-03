@@ -5,13 +5,27 @@ import SentenceAddingForm from "../SentenceAddingForm/SentenceAddingForm";
 import WordGrid from "../WordGrid/WordGrid";
 import SentenceGrid from "../SentenceGrid/SentenceGrid";
 import Sidebar from "../Sidebar/Sidebar";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { Typography, Box, Divider, Paper, Button } from "@mui/material";
 
-const WordBank = () => {
-  const [words, setWords] = useState([]);
-  const [sentences, setSentences] = useState([]);
+interface Word {
+  id: string;
+  french: string;
+  english: string;
+  category: string;
+}
 
+interface Sentence {
+  id: string;
+  sentence: string;
+  category: string;
+}
+
+const WordBank = () => {
+  const [words, setWords] = useState<Word[]>([]);
+  const [sentences, setSentences] = useState<Sentence[]>([]);
+
+  //Hämtar alla ord utifrån kategorierna i Firestore och sparar till Words statet.
   const getWords = async () => {
     try {
       const categoriesCollection = collection(db, "categories");
@@ -21,36 +35,44 @@ const WordBank = () => {
         categoriesSnapshot.docs.map(async (categoryDoc) => {
           const wordsCollection = collection(categoryDoc.ref, "words");
           const wordsSnapshot = await getDocs(wordsCollection);
-          return wordsSnapshot.docs.map((wordDoc) => ({
-            id: wordDoc.id,
-            ...wordDoc.data(),
-            category: categoryDoc.id,
-          }));
+          return wordsSnapshot.docs.map((wordDoc) => {
+            const data = wordDoc.data();
+            return {
+              id: wordDoc.id,
+              english: data.english || "",
+              french: data.french || "",
+              category: categoryDoc.id,
+            } as Word;
+          });
         })
       );
-
       setWords(allWords.flat());
     } catch (error) {
       console.error("Error fetching words:", error);
     }
   };
 
+  //Hämtar alla meningar från Firestore och sparar dem till Sentences statet.
   const getSentences = async () => {
     try {
       const sentencesCollection = collection(db, "sentences");
       const snapshot = await getDocs(sentencesCollection);
-      const allSentences = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
+      const allSentences = snapshot.docs.map((doc) => {
+        const data = doc.data();
+        return {
+          id: doc.id,
+          sentence: data.sentence || "",
+          category: data.category || "Uncategorized",
+        } as Sentence;
+      });
       setSentences(allSentences);
     } catch (error) {
       console.error("Error fetching sentences:", error);
     }
   };
-  const handleJSONImportWords = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+
+  //Hanterar uppladdning av JSON objekt för ord.
+  const handleJSONImportWords = async (event: ChangeEvent) => {
     const file = event.target.files?.[0];
     if (file) {
       const reader = new FileReader();
@@ -81,15 +103,17 @@ const WordBank = () => {
     }
   };
 
+  //Hanterar uppladdning av JSON objekt för meningarna.
   const handleJSONImportSentences = async (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: ChangeEvent<HTMLInputElement>
   ) => {
     const file = event.target.files?.[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = async (e) => {
         try {
-          const data = JSON.parse(e.target?.result as string);
+          const data: Array<{ sentence: string; category: string }> =
+            JSON.parse(e.target?.result as string);
           const sentencesCollection = collection(db, "sentences");
           for (const item of data) {
             if (!item.sentence || !item.category) continue;
@@ -109,6 +133,7 @@ const WordBank = () => {
     }
   };
 
+  //Hämtar den nödvändiga datan när sidan laddas.
   useEffect(() => {
     getWords();
     getSentences();
@@ -118,26 +143,16 @@ const WordBank = () => {
     <Box className="flex flex-row gap-6 bg-zinc-900 text-white h-screen">
       <Sidebar />
       <Box className="flex-1 p-6">
-        <Typography
-          variant="h4"
-          sx={{ textAlign: "center", marginBottom: "24px", fontWeight: "bold" }}
-        >
+        <Typography variant="h4" className="text-center mb-6 font-bold">
           Word Bank
         </Typography>
         <Box className="flex flex-row gap-6 mb-8">
           <WordAddingForm />
           <SentenceAddingForm />
         </Box>
-        <Divider className="bg-white" sx={{ marginBottom: "24px" }} />
+
         <Box className="flex flex-row gap-6 mb-6 items-center justify-center">
-          <Paper
-            sx={{
-              padding: "16px",
-              backgroundColor: "#1c1c1e",
-              borderRadius: "10px",
-              flex: 1,
-            }}
-          >
+          <Paper className="p-4 !bg-zinc-800 rounded-lg flex-1">
             <Typography variant="h6" className="mb-6 text-white">
               Import Words from JSON
             </Typography>
@@ -145,17 +160,10 @@ const WordBank = () => {
               type="file"
               accept=".json"
               onChange={handleJSONImportWords}
-              style={{ marginBottom: "8px", color: "white" }}
+              className="mb-2 text-white"
             />
           </Paper>
-          <Paper
-            sx={{
-              padding: "16px",
-              backgroundColor: "#1c1c1e",
-              borderRadius: "10px",
-              flex: 1,
-            }}
-          >
+          <Paper className="p-4 !bg-zinc-800 rounded-lg flex-1">
             <Typography variant="h6" className="text-white">
               Import Sentences from JSON
             </Typography>
@@ -163,47 +171,25 @@ const WordBank = () => {
               type="file"
               accept=".json"
               onChange={handleJSONImportSentences}
-              style={{ marginBottom: "8px", color: "white" }}
+              className="mb-2 text-white"
             />
           </Paper>
         </Box>
-        <Divider className="bg-white" sx={{ marginBottom: "24px" }} />
+        <Divider className="bg-white mb-6" />
         <Box className="flex flex-row gap-6">
-          <Box sx={{ flex: 1 }}>
-            <Typography
-              variant="h6"
-              sx={{ marginBottom: "16px", fontWeight: "bold" }}
-            >
+          <Box className="flex-1">
+            <Typography variant="h6" className="mb-4 font-bold">
               Words
             </Typography>
-            <Box
-              sx={{
-                maxHeight: "500px",
-                overflow: "auto",
-                border: "1px solid gray",
-                borderRadius: "8px",
-                padding: "8px",
-              }}
-            >
+            <Box className="max-h-[500px] overflow-auto border border-gray-400 rounded-lg p-2">
               <WordGrid rows={words} />
             </Box>
           </Box>
-          <Box sx={{ flex: 1 }}>
-            <Typography
-              variant="h6"
-              sx={{ marginBottom: "16px", fontWeight: "bold" }}
-            >
+          <Box className="flex-1">
+            <Typography variant="h6" className="mb-4 font-bold">
               Sentences
             </Typography>
-            <Box
-              sx={{
-                maxHeight: "500px",
-                overflow: "auto",
-                border: "1px solid gray",
-                borderRadius: "8px",
-                padding: "8px",
-              }}
-            >
+            <Box className="max-h-[500px] overflow-auto border border-gray-400 rounded-lg p-2">
               <SentenceGrid rows={sentences} />
             </Box>
           </Box>

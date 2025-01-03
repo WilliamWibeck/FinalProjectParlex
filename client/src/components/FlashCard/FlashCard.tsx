@@ -3,10 +3,12 @@ import { Typography, Button, Box } from "@mui/material";
 import { incrementWordsLearned } from "../../functions/incrementWordsLearned";
 import { trackFailedWord } from "../../functions/trackFailedWord";
 import Sidebar from "../Sidebar/Sidebar";
+import { incrementWrongGuessFlashCard } from "../../functions/incrementWrongGuessFlashCard";
 
 interface FlashCardProps {
   category: string | null;
-  words: { id: string; french: string; english: string; example?: string }[];
+  words: { id: string; french: string; english: string }[];
+  setCategoryChoosen: (value: boolean) => void;
 }
 
 const FlashCard = ({ category, words }: FlashCardProps) => {
@@ -31,6 +33,7 @@ const FlashCard = ({ category, words }: FlashCardProps) => {
       trackFailedWord(currentWord.id);
       setFlashClass("text-red-500");
       setFeedback(`Incorrect. The correct answer is: ${currentWord.french}`);
+      incrementWrongGuessFlashCard();
       setTimeout(() => {
         setFlashClass("");
       }, 1000);

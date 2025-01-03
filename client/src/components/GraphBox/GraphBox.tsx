@@ -3,12 +3,23 @@ import ReactApexChart from "react-apexcharts";
 import { Paper } from "@mui/material";
 import { getAuth } from "firebase/auth";
 import { doc, getDoc, getFirestore } from "firebase/firestore";
-import { Height } from "@mui/icons-material";
 
 const auth = getAuth();
 const db = getFirestore();
 
-const combineData = (words, sentences, wordOrders) => {
+interface Data {
+  date: string;
+  wordsDone: number;
+  sentencesDone: number;
+  wordOrderDone: number;
+}
+
+//Här kombineras data från words, sentences och wordOrders
+export const combineData = (
+  words: { date: string; wordsDone: number }[],
+  sentences: { date: string; sentencesDone: number }[],
+  wordOrders: { date: string; wordOrderDone: number }[]
+): Data[] => {
   return words.map((wordEntry) => {
     const matchingSentence = sentences.find(
       (sentenceEntry) => sentenceEntry.date === wordEntry.date
@@ -27,20 +38,20 @@ const combineData = (words, sentences, wordOrders) => {
 
 const GraphBox = () => {
   const user = auth.currentUser;
-  const [combinedData, setCombinedData] = useState([]);
+  const [combinedData, setCombinedData] = useState<Data[]>([]);
 
-  const getSnapshot = async () => {
+  //Här hämtas data från 'user_progress' dokumentet i Firestore. Datan sätts sen in i olika listor och konverteras till listor med datum och värden.
+  const getSnapshot = async (): Promise<void> => {
     if (user) {
       const userRef = doc(db, "user_progress", user.uid);
       const snapshot = await getDoc(userRef);
       const snapshotdata = snapshot.data();
-      console.log("Raw Firestore Data:", snapshotdata);
 
       const wordsByDate = snapshotdata?.wordsByDate || {};
       const sentencesByDate = snapshotdata?.sentencesByDate || {};
       const wordOrderByDate = snapshotdata?.wordOrderByDate || {};
 
-      const parseDateKey = (dateKey) => {
+      const parseDateKey = (dateKey: string) => {
         const year = dateKey.slice(0, 4);
         const month = dateKey.slice(4, 6);
         const day = dateKey.slice(6, 8);
@@ -73,23 +84,23 @@ const GraphBox = () => {
         sentencesArray,
         wordOrderArray
       );
-      console.log("Merged Data Before Filtering:", mergedData);
 
+      //Här filtreras data för att endast visa de senaste 7 dagarna.
       const last7Days = new Date();
       last7Days.setDate(last7Days.getDate() - 7);
 
       const filteredData = mergedData.filter((entry) => {
         const entryDate = new Date(entry.date);
-        console.log(
-          `Entry: ${entry.date}, Parsed Entry: ${entryDate}, Last 7 Days: ${last7Days}`
-        );
         return entryDate >= last7Days;
       });
 
-      console.log("Filtered Data:", filteredData);
-
+      //Här sorteras datan i stigande ordning baserat på datum
       setCombinedData(
-        filteredData.sort((a, b) => new Date(a.date) - new Date(b.date))
+        filteredData.sort((a, b) => {
+          const dateA = new Date(a.date).getTime();
+          const dateB = new Date(b.date).getTime();
+          return dateA - dateB;
+        })
       );
     }
   };
@@ -98,11 +109,13 @@ const GraphBox = () => {
     getSnapshot();
   }, []);
 
+  //Den kombinerade datan delas upp för att skapa serier till grafen.
   const dates = combinedData.map((entry) => entry.date);
   const wordsData = combinedData.map((entry) => entry.wordsDone);
   const sentencesData = combinedData.map((entry) => entry.sentencesDone);
   const wordOrderData = combinedData.map((entry) => entry.wordOrderDone);
 
+  //Inställningar för grafen
   const chartOptions = {
     chart: {
       type: "bar",
@@ -117,49 +130,18 @@ const GraphBox = () => {
           colors: "#FFFFFF",
         },
       },
-      axisBorder: {
-        color: "#555770",
-      },
-      axisTicks: {
-        color: "#555770",
-      },
     },
     yaxis: {
-      labels: {
-        style: {
-          colors: "#FFFFFF",
-        },
-      },
       title: {
         text: "Count",
         style: {
           color: "#FFFFFF",
         },
       },
-      axisBorder: {
-        color: "#555770",
-      },
-      axisTicks: {
-        color: "#555770",
-      },
     },
     colors: ["#00FF00", "#0284c7", "#6B46C1"],
-    grid: {
-      borderColor: "#555770",
-    },
-    legend: {
-      labels: {
-        colors: "#FFFFFF",
-      },
-    },
     tooltip: {
       theme: "dark",
-    },
-    plotOptions: {
-      bar: {
-        horizontal: false,
-        columnWidth: "70%",
-      },
     },
   };
 

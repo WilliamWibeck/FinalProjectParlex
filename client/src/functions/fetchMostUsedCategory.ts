@@ -3,12 +3,9 @@ import { db } from "../firebase/firebase";
 import { doc, getDoc } from "firebase/firestore";
 
 const auth = getAuth();
-interface fetchMostUsedCategory {
-  count: number;
-  maxCount: number;
-}
 
-export const fetchMostUsedCategory = async () => {
+//Denna funktion hämtar bara den kategorin som är mest spelad i flashcards.
+export const fetchMostUsedCategory = async (): Promise<string | null> => {
   const user = auth?.currentUser;
   const userId = user?.uid;
 
@@ -23,10 +20,13 @@ export const fetchMostUsedCategory = async () => {
     const snapshot = await getDoc(userRef);
     const data = snapshot.data();
 
-    const categoriesPractised = data?.categoriesPractised || {};
+    const categoriesPractised: Record<string, number> =
+      data?.categoriesPractised || {};
 
-    let mostPractisedCategory: string | undefined;
+    let mostPractisedCategory: string | null = null;
     let maxCount = 0;
+
+    //Här konverteras objektet categoriesPractised till en array med key value pair. En forEach körs sen för att se vilken category som har högst värde
     Object.entries(categoriesPractised).forEach(([category, count]) => {
       if (count > maxCount) {
         maxCount = count;

@@ -1,7 +1,8 @@
 import { useDroppable } from "@dnd-kit/core";
 import { Box } from "@mui/material";
+import { ReactNode } from "react";
 
-const DroppableArea = ({ children }) => {
+const DroppableArea = ({ children }: { children: ReactNode }) => {
   const { isOver, setNodeRef } = useDroppable({
     id: "middle",
   });
@@ -9,21 +10,9 @@ const DroppableArea = ({ children }) => {
   return (
     <Box
       ref={setNodeRef}
-      sx={{
-        flex: 1,
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        flexWrap: "wrap",
-        gap: "10px",
-        padding: "20px",
-        border: `2px solid ${isOver ? "#4caf50" : "#ccc"}`,
-        borderRadius: "8px",
-        backgroundColor: "#f5f5f5",
-        margin: "20px auto",
-        width: "80%",
-        transition: "border-color 0.2s ease",
-      }}
+      className={`flex flex-1 justify-center items-center flex-wrap gap-2.5 p-5 border-2 rounded-lg bg-gray-100 w-4/5 mx-auto transition-colors duration-200 ${
+        isOver ? "border-green-500" : "border-gray-300"
+      }`}
     >
       {children}
     </Box>

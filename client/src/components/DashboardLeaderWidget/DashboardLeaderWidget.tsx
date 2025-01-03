@@ -1,15 +1,23 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { fetchAllUserStats } from "../../functions/fetchAllUserStats";
 import { Box, Divider } from "@mui/material";
 
-type Props = {};
+interface UserStats {
+  id: string;
+  firstName: string;
+  lastName: string;
+  wordsLearned: number;
+  sentencesCompleted: number;
+  wordOrderCompleted: number;
+}
 
-const DashboardLeaderWidget = (props: Props) => {
-  const [wordLeaders, setWordLeaders] = useState([]);
-  const [sentenceLeaders, setSentenceLeaders] = useState([]);
-  const [wordOrderLeaders, setWordOrderLeaders] = useState([]);
+const DashboardLeaderWidget = () => {
+  const [wordLeaders, setWordLeaders] = useState<UserStats[]>([]);
+  const [sentenceLeaders, setSentenceLeaders] = useState<UserStats[]>([]);
+  const [wordOrderLeaders, setWordOrderLeaders] = useState<UserStats[]>([]);
 
   useEffect(() => {
+    //Stats för alla 'ledande' konton hämtas och sorteras i storleksordning.
     const fetchLeaders = async () => {
       const fullStats = await fetchAllUserStats();
 

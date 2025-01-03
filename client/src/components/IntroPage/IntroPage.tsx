@@ -1,15 +1,16 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import { ReactTyped } from "react-typed";
 import TailwindParticles from "../TailwindParticles/TailwindParticles";
 
-const IntroPage = ({ handleIntroShown }) => {
-  const [introShown, setIntroShown] = useState(false);
-  const [buttonVisible, setButtonVisible] = useState(false);
-  const [boxVisible, setBoxVisible] = useState(true);
+interface IntroPageProps {
+  handleIntroShown: (shown: boolean) => void;
+}
 
-  const navigate = useNavigate();
+const IntroPage = ({ handleIntroShown }: IntroPageProps) => {
+  const [introShown, setIntroShown] = useState<boolean>(false);
+  const [buttonVisible, setButtonVisible] = useState<boolean>(false);
+  const [boxVisible, setBoxVisible] = useState<boolean>(true);
 
   const handleIntro = () => {
     setIntroShown(true);
@@ -31,6 +32,8 @@ const IntroPage = ({ handleIntroShown }) => {
       handleIntro();
     }, 2000);
   };
+
+  //Här används biblioteket 'ReactTyped' för att få en skrivmaskins effekt på välkomsttexten.
 
   return (
     <Box

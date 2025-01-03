@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import ReactApexChart from "react-apexcharts";
 import { getAuth } from "firebase/auth";
 import { doc, getDoc, getFirestore } from "firebase/firestore";
@@ -7,11 +7,11 @@ const auth = getAuth();
 const db = getFirestore();
 
 const AccuracyGraph = () => {
-  const [viewMode, setViewMode] = useState(30);
-  const [categories, setCategories] = useState([]);
-  const [accuracySeries, setAccuracySeries] = useState([]);
+  const [daySwitcher, setDaySwitcher] = useState<number>(30); //state för att switcha mellan 7 och 30 dagars statistik
+  const [categories, setCategories] = useState<string[]>([]);
+  const [accuracySeries, setAccuracySeries] = useState<number[]>([]);
 
-  const fetchAccuracyData = async (days: string) => {
+  const fetchAccuracyData = async (days: number) => {
     const user = auth.currentUser;
 
     if (user) {
@@ -19,6 +19,7 @@ const AccuracyGraph = () => {
       const userDoc = await getDoc(userRef);
 
       const data = userDoc.data();
+
       if (!data) return;
 
       const wordsByDate = data?.wordsByDate || {};
@@ -27,13 +28,15 @@ const AccuracyGraph = () => {
       const incorrectGuessesByDate = data?.incorrectGuessesByDate || {};
 
       const today = new Date();
-      const lastNDays = [...Array(days)].map((_, i) => {
+      //Skapar en lista med senaste dagarna samt formaterar till YYYYMMDD format.
+      const lastXDays = [...Array(days)].map((_, i) => {
         const date = new Date(today);
         date.setDate(today.getDate() - i);
         return date.toISOString().split("T")[0].replace(/-/g, "");
       });
 
-      const dailyAccuracy = lastNDays.map((date) => {
+      //Räknar ut en daily accuracy genom att hämta antal korrekta och inkorrekta gissningar för varje dag och sedan dividerar.
+      const dailyAccuracy: number[] = lastXDays.map((date): number => {
         const correctGuesses =
           (wordsByDate[date] || 0) +
           (sentencesByDate[date] || 0) +
@@ -41,23 +44,23 @@ const AccuracyGraph = () => {
 
         const incorrectGuesses =
           (incorrectGuessesByDate[date]?.completeSentence || 0) +
-          (incorrectGuessesByDate[date]?.wordorder || 0);
+          (incorrectGuessesByDate[date]?.wordorder || 0) +
+          (incorrectGuessesByDate[date]?.flashcards || 0);
 
         const totalGuesses = correctGuesses + incorrectGuesses;
 
         return totalGuesses > 0
-          ? ((correctGuesses / totalGuesses) * 100).toFixed(2)
+          ? parseFloat(((correctGuesses / totalGuesses) * 100).toFixed(2))
           : 0;
       });
-
-      setCategories(lastNDays.reverse());
+      setCategories(lastXDays.reverse());
       setAccuracySeries(dailyAccuracy.reverse());
     }
   };
 
   useEffect(() => {
-    fetchAccuracyData(viewMode);
-  }, [viewMode]);
+    fetchAccuracyData(daySwitcher);
+  }, [daySwitcher]);
 
   const chartOptions = {
     chart: {
@@ -74,7 +77,7 @@ const AccuracyGraph = () => {
           colors: "white",
         },
       },
-      tickAmount: viewMode === 7 ? 7 : 4,
+      tickAmount: daySwitcher === 7 ? 7 : 4,
     },
     yaxis: {
       labels: {
@@ -109,21 +112,21 @@ const AccuracyGraph = () => {
       <div className="flex justify-center gap-4 mb-4">
         <button
           className={`px-4 py-2 rounded ${
-            viewMode === 7
+            daySwitcher === 7
               ? "bg-[#6b46c1] text-white"
               : "bg-zinc-700 text-white"
           }`}
-          onClick={() => setViewMode(7)}
+          onClick={() => setDaySwitcher(7)}
         >
           Last 7 Days
         </button>
         <button
           className={`px-4 py-2 rounded ${
-            viewMode === 30
+            daySwitcher === 30
               ? "bg-[#6b46c1] text-white"
               : "bg-zinc-700 text-white"
           }`}
-          onClick={() => setViewMode(30)}
+          onClick={() => setDaySwitcher(30)}
         >
           Last 30 Days
         </button>
